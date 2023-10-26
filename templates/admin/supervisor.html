@@ -1,0 +1,128 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block title%}
+<title>supervisors </title>
+    {%endblock%}
+{%block css%}
+<style>
+    .dialog_action {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--blackdialog_background_color);
+        z-index: 1000;
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        display: none;
+    }
+</style>
+{%endblock%}
+{%block toolkit%} 
+
+<div class="mt-1 mb-2 d-flex justify-content-between">   <div class="btn-group">
+        <button id="editable-sample_new" onclick="addNew('add')" class="btn border card-icon-warning">
+            <i data-feather="plus"></i>
+        </button>
+    </div>
+    
+</div>
+{%endblock%}
+                    
+                    
+
+{%block body%}
+<table id="atom_table" class="table table-light border compact my-1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sup in supervisor %}
+        <tr>
+            <td>{{sup.supervisor_details.first_name}} {{sup.supervisor_details.last_name}}</td>
+            <td>{{sup.department}}</td>
+            <td> <a href="tel:{{sup.phone_number}}"> {{sup.phone_number}}</a></td>
+            <td><a href="mailto:{{sup.supervisor_details.email}}">{{sup.supervisor_details.email}}</a></td>
+        </tr>
+        {%endfor%}
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+    </tfoot>
+</table>
+<div class="dialog_edit dialog_action" id="add">
+    <form action="add?{{request.GET.urlencode}}" method="post" autocomplete="off">
+        {%csrf_token%}
+        <div class="row bg-secondary px-2 pb-2 rounded w-lg-50">
+            <div class="p-0 m-0 mb-1 text-end" style="float: right;"><a href="#" class="text-danger"
+                    onclick="addNew('close')"><i class=" " data-feather="x-circle"></i></a></div>               
+            <div class="col-12 mx-auto">
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" id="fname" class="form-control" placeholder="first name (optional)">
+                <label for="lname" class="mx-auto">Last Name </label>
+                <input type="text" name="lname" id="lname" class="form-control" placeholder="last name (optional)">
+                <label for="username" class="mx-auto">Department </label>
+                <select name="department" id="department" class="form-control" required>
+                    <option value="">----------------</option>
+                    {%for dep in departments%}
+                    <option value="{{dep.id}}">{{dep.department_name}}</option>
+                    {%endfor%}
+                </select>
+                <label for="username" class="mx-auto">Username </label>
+                <input type="text" name="username" id="username" class="form-control" required
+                    placeholder="username">
+                <label for="password" class="mx-auto">Password </label>
+                <input type="password" name="password" id="password" class="form-control" required
+                    autocomplete="new-password" placeholder="password">
+                <label for="password" class="mx-auto">Password </label>
+                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
+                    placeholder="password">
+                <input type="submit" class="form-control mt-1 btn-dark" value="Submit">
+            </div>
+        </div>  
+        </form>
+</div>
+
+
+{%endblock%}
+
+
+
+
+{%block javascriptlinks%}
+
+{%endblock%}
+
+{%block script%}
+<script>
+
+    $('#atom_table').DataTable({
+        responsive: true,
+        language: {
+            searchPlaceholder: 'Search...',
+            sSearch: ''
+        },dom: 'Bfrtip',
+        buttons: [
+             'excel', 'pdf', 'print'
+        ]
+    });
+
+</script>
+{%endblock%}
+
+</body>
+
+</html>

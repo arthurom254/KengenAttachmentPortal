@@ -1,0 +1,72 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block css%}
+<style>
+    
+</style>
+{%endblock%}
+{%block toolkit%}
+{%endblock%}
+{%block body%}
+<div class="container-fluid">
+    <div class="row row-xs clearfix">
+        <div class="col-12">
+            <div class="card mg-b-20">
+                <ul class="list-group list-group-flush tx-13">
+                    <li class="list-group-item d-flex pd-sm-x-20"> <span class="h5">Weeks</span></li>
+                    <form action="" method="post">
+                        {%csrf_token%}
+                        {%for week in weeks %}
+                        <li class="list-group-item d-flex pd-sm-x-20 justify-content-between ">
+                            <div class="d-flex">
+                            <div class="d-none d-sm-block">
+                                <span
+                                    class="c-box d-flex align-items-center justify-content-center rounded card-icon-success">
+                                    <div class="custom-control custom-radio">
+                                        <input name="approve{{log.week.id}}" value="{{log.week.id}}" type="checkbox" class="custom-control-input"
+                                            id="sessionid{{log.week.id}}" {%if week.closed == 'True'%} checked disabled{%endif%} >               
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="pd-sm-l-10">
+                                <h6 class="tx-dark mg-b-0">Week {{week.weeknum}}<span class="tx-12"> ({{week.startdate}} -
+                                        {{week.enddate}})</span>
+                                </h6>
+                                <span class="tx-12 mg-b-0 tx-gray-500">
+                                    Status: {%if week.closed == 'False'%}<span class="tx-12 tx-success mg-b-0">Open</span>
+                                    {%else%}
+                                    <span class="tx-12 tx-danger mg-b-0">Closed</span>
+                                    {%endif%}
+                                </span>
+                            </div>
+                            </div>
+                            <div class="mg-l-auto text-right">
+                                <span class="badge badge-pill">
+                                    {%if week.closed == 'True'%}
+                                    <a class="text-white text-decoration-none p-2 btn btn-success" href="?page=weeks&id={{week.id}}&closed=0">Open</a>
+                                    <a class="text-dark text-decoration-none p-2 btn border" href="?page=students&wkid={{week.id}}">Approved</a>
+
+                                    {%else%}
+                                    <a class="text-white text-decoration-none p-2 btn btn-danger" href="?page=weeks&id={{week.id}}&closed=1">Close</a>
+                                    <a class="text-dark text-decoration-none p-2 btn border" href="?page=students&wkid={{week.id}}">Approved</a>
+                                    {%endif%}
+                                </span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block javascriptlinks%}
+{%endblock%}
+{%block script%}
+<script>
+    function addNewSession(arg){
+        document.getElementById("addNewSession").style.display=arg;
+    }
+</script>
+{%endblock%}

@@ -1,0 +1,139 @@
+{%extends 'students/base.html'%}
+{%load static%}
+
+{%block css%}
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.css">
+<link type="text/css" rel="stylesheet" href="{%static 'assets/css/logs.css' %}" />
+{%endblock%}
+{%block body%}
+<form action="" method="post">
+    {%csrf_token%}
+            <div class="page-inner mt-2">
+                    <!-- Editor1 -->
+                    <div class="col-md-12 col-lg-12">
+                        <div class="card mg-b-20">
+                            <div class="card-header">
+                                <h4 class="card-header-title">Activity Done</h4>
+                                <div class="card-header-btn">
+                                    <a href="#" data-bs-toggle="collapse" class="btn card-collapse"
+                                        data-bs-target="#objectives" aria-expanded="true"><i
+                                            class="ion-ios-arrow-down"></i></a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="objectives">
+                                <div id="activityDone">
+                                    {{logs.activityDone | safe}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Editor1 End -->
+                    <!-- Editor2 -->
+                    <div class="col-md-12 col-lg-12">
+                        <div class="card mg-b-20">
+                            <div class="card-header">
+                                <h4 class="card-header-title">Challenges met</h4>
+                                <div class="card-header-btn">
+                                    <a href="#" data-bs-toggle="collapse" class="btn card-collapse"
+                                        data-bs-target="#activity" aria-expanded="true"><i
+                                            class="ion-ios-arrow-down"></i></a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="activity">
+                                <div id="newSkillsAquired">
+                                    {{logs.challangesMet | safe}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Editor2 End -->
+                    <!-- Editor3 -->
+                    <div class="col-12">
+                        <div class="card mg-b-20">
+                            <div class="card-header">
+                                <h4 class="card-header-title">New skills Gained</h4>
+                                <div class="card-header-btn">
+                                    <a href="#" data-bs-toggle="collapse" class="btn card-collapse"
+                                        data-bs-target="#collapse3" aria-expanded="true"><i
+                                            class="ion-ios-arrow-down"></i></a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="collapse3">
+                                <div id="challangesMet">
+                                   {{logs.challangesMet | safe}}
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Editor3 End -->
+                    <div class="row my-2">
+                        <div class="col-5 mx-auto">
+                            <a href="#" class="btn border btn-label-primary form-control" onclick="ql_value()">Save</a>
+                        </div>
+                        <div class="col-5 mx-auto">
+                            <a href="/" class="btn btn-label-danger form-control">Back</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+</form>
+{%endblock%}
+
+{%block js%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+
+<script>
+    //Quill Editor for objectives
+    var quill = new Quill('#activityDone', {
+        placeholder: 'Type your text here',
+        theme: 'snow'
+    });
+
+
+    //Quill Editor for activities done
+    var quill1 = new Quill('#newSkillsAquired', {
+        placeholder: 'Type your text here',
+        theme: 'snow'
+    });
+    //Quill Editor for new skills
+    var quill2 = new Quill('#challangesMet', {
+        placeholder: 'Type your text here',
+        theme: 'snow'
+    });
+
+
+    function ql_value() {
+        var activityDone = document.getElementById('activityDone').firstChild.innerHTML;;
+        var newSkillsAquired = document.getElementById('newSkillsAquired').firstChild.innerHTML;;
+        var challangesMet = document.getElementById('challangesMet').firstChild.innerHTML;;
+        $.post(
+            '/savelogs/{{logs.week.id}}',
+            {
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                activityDone: activityDone,
+                newSkillsAquired: newSkillsAquired,
+                challangesMet: challangesMet
+            },
+            function (data, status) {
+                if(data=='True'){
+                    window.location.href='/';
+                }
+                else{
+                    alert('Not saved');
+                }
+            }
+        );
+
+    }
+
+    peaceJS({
+        target: '#red',
+        theme: 'blue',
+        style: 'symbol'
+
+    });
+</script>
+{%endblock%}
+</body>
+
+</html>

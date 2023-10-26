@@ -1,0 +1,86 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block title%}
+<title>Departments</title>
+    {%endblock%}
+
+{%block css%}
+<style>
+
+
+</style>
+{%endblock%}
+{%block toolkit%}
+{%endblock%}
+{%block body%}
+<div class="container-fluid">
+    <div class="row row-xs clearfix">
+        <div class="col-12">
+            <div class="mg-b-20">
+                <form action="/addnew?{{request.GET.urlencode}}" method="POST">
+                    {%csrf_token%}
+                    <ul class="list-group list-group-flush tx-13">
+                        <li class="list-group-item d-flex justify-content-between align-items-center pd-sm-x-20">
+                            <span class="h5 text-uppercase">Departments</span>
+                            <span class="btn card-icon-warning border" id="addNewSessionBtn"
+                                onclick="addNewSession('flex')">&plus;</span>
+                        </li>
+                        <li class="list-group-item pd-sm-x-20" id="addNewSession">
+                            <div class="col">
+                                <label for="departments">Departments name</label>
+                                <input type="text" name="departments" id="departments" class="form-control">
+                            </div>
+                            <div class="col">
+                                <label for=""></label>
+                                <input type="submit" class="btn border form-control" value="Submit" />
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <ul class="list-group list-group-flush tx-13">
+
+                    <form action="" method="post">
+                        {%csrf_token%}
+                        {%for dep in departments%}
+
+                        <li class="list-group-item justify-content-between d-flex pd-sm-x-20">
+                            <div class="">
+                            <div class="d-none d-sm-block">
+                                <span
+                                    class="wd-40 ht-40 mg-r-10 d-flex align-items-center justify-content-center rounded card-icon-success">
+                                    
+                                    </span>
+                            </div>
+                            <div class="pd-sm-l-10">
+                                <h6 class="tx-dark mg-b-0">{{dep.department_name}}</h6>
+                                <span class="tx-12 mg-b-0 tx-gray-500">
+                                    Status: <span class="tx-12 tx-success mg-b-0">Active</span>
+                                    
+                                </span>
+                            </div>
+                            </div>
+                            <div class="mg-l-auto text-right">
+                                <p class="mg-b-0 tx-rubik tx-dark"><a href=""
+                                        class="tx-dark mg-b-0 tx-semibold tx-success kgn-a">supervisors</a></p>
+                                <span class="tx-12 mg-b-0"><a href="/adm?page=students&sid={{sess.id}}"
+                                        class="tx-dark mg-b-0 tx-semibold tx-success kgn-a">
+                                        students</a></span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block javascriptlinks%}
+{%endblock%}
+{%block script%}
+<script>
+    function addNewSession(arg) {
+        document.getElementById("addNewSession").style.display = arg;
+    }
+</script>
+{%endblock%}

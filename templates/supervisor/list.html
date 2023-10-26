@@ -1,0 +1,44 @@
+
+
+
+
+
+
+{%extends 'supervisor/supbase.html'%}
+
+{%block body%}
+
+<h6>{{users.first_name}} {{users.last_name}}'s Weekly activity</h6>
+{%for log in logs reversed%}
+
+<li class="list-group-item d-flex justify-content-between pd-sm-x-20 bg-light p-1">
+    <div class="d-flex">
+    <div class="d-none d-sm-block">
+        <span
+            class="c-box d-flex align-items-center justify-content-center rounded card-icon-success">
+            <div class="custom-control">
+               {{log.week.weeknum}}
+            </div>
+            </span>
+    </div>
+    <div class="pd-sm-l-10">
+        <h6 class="tx-dark mg-b-0">{{log.week.startdate}} - {{log.week.enddate}}</h6>
+        <span class="mg-b-0 tx-gray-500">
+            Status: {%if log.week.closed == 'False'%}<span class="text-success mg-b-0">Open</span>
+            {%else%}
+            <span class="text-danger mg-b-0">Closed</span>
+            {%endif%}
+        </span>
+    </div>
+    </div>
+    <div class="mg-l-auto text-right">
+        <span class="badge badge-pill">
+            <a class="text-dark btn p-2 btn-label-success" href="/supervisor?page=students&id={{stdid}}&logs={{log.id}}">More</a>           
+        </span>
+    </div>
+</li>
+{%empty%}
+<p>Nothing to show</p>
+{%endfor%}
+
+{%endblock%}

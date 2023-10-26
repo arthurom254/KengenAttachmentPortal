@@ -1,0 +1,117 @@
+
+:root {
+    --white: #ffffff;
+    --black: #0000;
+	--secondary:#2c2c2c;
+	--primary-black:#1a1a1a;
+  }
+.page-inner {
+	position: relative;
+	padding: 0 25px 0;
+	width: 100%;
+}
+
+.page-inner.full-page {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0
+}
+
+.page-header-fixed .page-inner {
+	margin-top: 60px
+}
+
+_::-webkit-full-page-media,
+_::future,
+:root .page-inner {
+	padding-bottom: 0
+}
+
+.card .card-header {
+	color: var(--secondary);
+	background-color: var(--white);
+	align-items: center;
+	padding: .75rem .9375rem;
+	text-decoration: none!important;
+	border-bottom: 1px solid rgba(230, 230, 230, 0.7);
+	outline: 0!important;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+}
+
+.card .card-header.card-header-inverse {
+	background: var(--primary-black);
+	color: var(--secondary);
+}
+
+
+.card .card-header.card-header-inverse.card-header-with-tabs {
+	border-bottom: 1px solid var(--secondary);
+}
+
+.card .card-header.card-header-inverse .card-header-tabs {
+	border: 0
+}
+
+.card .card-header.card-header-inverse .card-header-tabs .nav-link.active {
+	background: var(--white);
+	border-color: transparent
+}
+
+.card .card-header.card-header-inverse .card-header-tabs .nav-link:focus,
+.card .card-header.card-header-inverse .card-header-tabs .nav-link:hover {
+	border-color: transparent
+}
+
+.card .card-header.card-header-with-tabs {
+	border-bottom: 1px solid #ccc
+}
+
+.card .card-header .card-header-tabs {
+	border: 0
+}
+
+.card .card-header .card-header-tabs .nav-link.active {
+	background: var(--white);
+}
+
+.card .card-header .card-header-title {
+	color: #001737;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	margin: 0;
+	text-transform: capitalize;
+	font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.card .card-header .card-header-btn {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex
+}
+
+.card .card-header .card-header-btn .btn {
+	padding: 0;
+	width: 1.125rem;
+	height: 1.125rem;
+	line-height: 1rem;
+	-webkit-border-radius: 0.1rem;
+	-moz-border-radius: 0.1rem;
+	-o-border-radius: 0.1rem;
+	-ms-border-radius: 0.1rem;
+	border-radius: 0.1rem;
+}
+
+.card .card-header .card-header-btn .btn+.btn {
+	margin-left: .3125rem
+}
+
+.pdf{
+	font-size: 0.9em;
+}
+.pdf .table-name{
+	width:10%;
+}

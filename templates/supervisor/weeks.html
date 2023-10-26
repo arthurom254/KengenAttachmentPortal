@@ -1,0 +1,58 @@
+{%extends 'supervisor/supbase.html'%}
+
+{%block body%}
+    <form action="" enctype="multipart/form-data" method="post">
+        <div class="row container-fluid">
+
+            <div class="col-lg-5 col-md-5 bg-light m-3 p-2">
+                <div class="container-fluid">
+                    {%csrf_token%}
+                    <div class="mb-2">
+                        <label for="fname" class="form-label">First name:</label>
+                        <input type="text" class="form-control" value="{{profile.supervisor_details.first_name}}"
+                            name="fname" id="fname" aria-describedby="fname" placeholder="first name" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="lname" class="form-label">Last name:</label>
+                        <input type="text" class="form-control" value="{{profile.supervisor_details.last_name}}"
+                            name="lname" id="lname" aria-describedby="lname" placeholder="last name" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" value="{{profile.supervisor_details.email}}" name="email"
+                            id="email" aria-describedby="email" placeholder="email">
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input type="text" class="form-control" value="{{profile.phone_number }}" name="phone"
+                            id="phone" aria-describedby="phone" placeholder="phone">
+                    </div>
+                    <p>Date joined: {{profile.supervisor_details.date_joined}}</p>
+                    <p>Last Login: {{profile.supervisor_details.last_login}}</p>
+                    <button type="submit" class="btn card-icon-success form-control">Save</button>
+
+
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 p-1">
+                <div class="card mg-b-20">
+                    <div class="card-header">
+                        <h4 class="card-header-title">profile photo</h4>
+                    </div>
+                    <div class="card-body" id="">
+                        <input type="file" name="profile" class="dropify" data-errors-position="outside" />
+                    </div>
+                </div>
+                {%if profile.profile_photo != None%} 
+                <img src="media/{{profile.profile_photo}}" width="100px" height="100px" alt="{{profile.supervisor_details}}">
+                {%else%} 
+                <h6>No document yet</h6>
+                {%endif%}
+            </div>
+        </div>
+    </form>
+
+
+
+
+{%endblock%}

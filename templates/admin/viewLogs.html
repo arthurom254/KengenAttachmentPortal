@@ -1,0 +1,78 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block css%}
+<link type="text/css" rel="stylesheet" href="{%static 'assets/css/logs.css' %}" />
+{%endblock%}
+{%block body%}
+<div class="">
+    <div class="col mx-auto">
+        <div class="page-inner mt-2">
+            <div id="main-wrapper">
+                <h6>{{users.first_name}} {{users.last_name}}'s Weekly activity for week {{logs.week.weeknum}}</h6>
+                <div class="col-md-12 col-lg-12">
+                    <div class="card mg-b-20">
+                        <div class="card-header">
+                            <h6 class="card-header-title">Activity Done</h6>
+                        </div>
+                        <div class="card-body collapse show" id="objectives">
+                            <div id="snow-container">
+                                {{logs.activityDone | safe}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12">
+                    <div class="card mg-b-20">
+                        <div class="card-header">
+                            <h6 class="card-header-title">Challenges met</h6>
+                        </div>
+                        <div class="card-body collapse show" id="activity">
+                            <div id="snow-container2">
+                                {{logs.challangesMet | safe}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12">
+                    <div class="card mg-b-20">
+                        <div class="card-header">
+                            <h6 class="card-header-title">New skills Gained</h6>
+                        </div>
+                        <div class="card-body collapse show" id="collapse3">
+                            <div id="snow-container3">
+                                {{logs.newSkillsAquired | safe}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card mg-b-20">
+                        Comment: {{logs.comments}}
+                        <form action="" method="post">
+                            {%csrf_token%}
+                            {%if logs.approved == 'True'%}
+                            <span class="bg-success text-light">Approved</span>
+                            <input type="radio" name="approved" value="True"  checked>Approved
+                            <input type="radio" name="approved" value="False" >Not Approved
+                            {%elif logs.approved == 'False'%}
+                            <span class="bg-danger text-light">Not Approved</span>
+                            <input type="radio" name="approved" value="True" >Approved
+                            <input type="radio" name="approved" value="False"  checked>Not Approved
+                            {%else%}
+                            <span class="bg-secondary text-light">Pending</span>
+                            <input type="radio" name="approved" value="True" >Approved
+                            <input type="radio" name="approved" value="False" >Not Approved
+                            {%endif%}<br/>
+                            <textarea  placeholder="comment here" disabled class="form-control" cols="30" rows="5"  id="comment" name="comment">{{logs.comments}}</textarea>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block js%}
+{%endblock%}
+</body>
+</html>

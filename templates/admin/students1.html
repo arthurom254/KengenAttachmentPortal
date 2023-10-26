@@ -1,0 +1,74 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+
+{%block title%}
+<title>Week {{thisweek.weeknum}} Approved Students</title>
+{%endblock%}
+{%block toolkit%} 
+
+<div class="mt-1 mb-2">   
+  <h6>Week {{thisweek.weeknum}} Approved Students</h6> 
+</div>
+{%endblock%}
+{%block body%}
+<table id="atom_table" class="compact table border table-light my-1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Institution</th>
+            <th>Phone</th>    
+            <th>Email</th>    
+        </tr>
+    </thead>
+    <tbody>
+{% for st in approved %}
+        <tr>
+            <td>{{st.student_details.student_details.first_name}} {{st.student_details.last_name}}</td>
+            <td>{{st.student_details.department.department_name}}</td>
+            <td>{{st.student_details.institution}}</td>
+            <td>{{st.student_details.phone_number}}</td>
+            <td>{{st.student_details.student_details.email}}</td>
+        </tr>
+{%endfor%}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Institution</th>
+            <th>Phone</th>    
+            <th>Email</th>     
+        </tr>
+    </tfoot>
+</table>
+
+
+{%endblock%}
+
+{%block javascriptlinks%}
+
+{%endblock%}
+
+{%block script%}
+<script>
+
+    $('#atom_table').DataTable({
+        responsive: true,
+        language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            
+        },dom: 'Blfrtip',
+            buttons: [
+                 'excel', 'pdf', 'print'
+            ]
+    });
+    
+
+</script>
+{%endblock%}
+
+</body>
+
+</html>

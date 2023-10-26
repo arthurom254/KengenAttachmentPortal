@@ -1,0 +1,85 @@
+{%extends 'supervisor/supbase.html'%}
+{%load static%}
+{%block title%}
+{{profile.department}} students
+{%endblock%}
+{%block toolkit%} 
+
+<div class="mt-1 mb-2 d-flex justify-content-between">   <div class="btn-group">
+        <button id="editable-sample_new" onclick="addNew('add')" class="btn border">
+            <i data-feather="plus"></i>
+        </button>
+    </div>
+</div>
+{%endblock%}
+{%block body%}
+<span>{{profile.department}}</span>
+<table id="atom_table" class="compact table border table-light my-1 tx-rubik">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Institution</th>           
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="atom">
+{% for st in students%}
+        <tr>
+            <td>{{st.student_details.first_name}} {{st.student_details.last_name}}</td>
+            <td>{{st.phone_number}}</td>
+            <td>{{st.institution}}</td>
+            <td><a href="/supervisor?id={{st.student_details.id}}&page=students">progress </a>
+            </td>
+        </tr>
+{%endfor%}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Institution</th>           
+            <th>Action</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+{%endblock%}
+
+
+
+
+{%block javascriptlinks%}
+
+{%endblock%}
+
+{%block script%}
+<script>
+
+    $('#atom_table').DataTable({
+        responsive: true,
+        language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            
+        },dom: 'Bfrtip',
+            buttons: [
+                 'excel', 'pdf', 'print'
+            ]
+    });
+    $('#atom_table').MakeCellsEditable({
+        "onUpdate": myCallbackFunction
+    });
+    
+    myCallbackFunction = function (updatedCell, updatedRow) {
+        console.log("The new value for the cell is: " + updatedCell.data());
+    }
+
+</script>
+
+{%endblock%}
+
+</body>
+
+</html>

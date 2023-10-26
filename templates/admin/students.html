@@ -1,0 +1,125 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block title%}
+<title>Attaches List </title>
+{%endblock%}
+
+{%block css%}
+<style>
+    
+</style>
+{%endblock%}
+{%block toolkit%} 
+<div class="mt-1 mb-2 d-flex justify-content-between">   <div class="btn-group">
+        <button id="editable-sample_new" data-bs-toggle="collapse" data-bs-target="#new-profile"
+        arial-expanded="false" arial-controls="new-profile" role="button" class="btn border card-icon-warning">
+            <i data-feather="plus"></i>
+        </button>
+    </div>
+</div>
+{%endblock%}
+{%block body%}
+<p class="text-danger">{%for mess in messages%}{{mess}}{%endfor%}</p>
+<table class="table collapse border table-light" id="new-profile" data-bs-toggle="hide">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Institution</th>
+            <th>Phone</th>    
+            <th>Email</th>       
+            <th></th>
+        </tr>
+    </thead>
+   <tbody>
+    <form action="new" method="post" autocomplete="off">
+        {%csrf_token%}
+        <tr>
+                <td class="d-flex">
+                    <input type="text" name="fname" id="fname" class="form-control" placeholder="first name" required>
+                    <input type="text" name="lname" id="lname" class="form-control" placeholder="last name" required>
+                </td>
+                <td>
+                    <select name="department" id="department" class="form-control" required>
+                        <option value="">----------------</option>
+                        {%for dep in departments%}
+                        <option value="{{dep.id}}">{{dep.department_name}}</option>
+                        {%endfor%}
+                    </select>
+                </td>
+                <td>
+                    <select name="institution" id="institution" class="form-control" required>
+                        <option value="">----------------</option>
+                        {%for institution in institutions%}
+                        <option value="{{institution.id}}">{{institution}}</option>
+                        {%endfor%}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Phone">
+                </td>
+                <td>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="email" required>
+                </td>
+                <td>
+                    <input type="submit" class="btn border" value="Submit"/>
+                </td>                
+    </tr>
+    </form>
+    </tbody> 
+</table>
+<table id="atom_table" class="compact table border table-light my-1 table-responsive">
+    
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Institution</th>
+            <th>Phone</th>    
+            <th>Email</th>       
+            <th>Approved</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for st in students%}
+        <tr>
+            <td class="capitals">{{st.student_details.first_name}} {{st.student_details.last_name}}</td>
+            <td>{{st.department.department_name}}</td>
+            <td>{{st.institution}}</td>
+            <td> <a href="tel:{{st.phone_number}}"> {{st.phone_number}}</a></td>
+            <td><a href="mailto:{{st.student_details.email}}">{{st.student_details.email}}</a></td>
+            <td><a href="/adm?id={{st.student_details.id}}&page=students">{{st.approved_count}} Weeks </a></td>
+        </tr>
+{%endfor%}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Institution</th>
+            <th>Phone</th>    
+            <th>Email</th>       
+            <th>Approved</th>
+        </tr>
+    </tfoot>
+</table>
+{%endblock%}
+{%block javascriptlinks%}
+{%endblock%}
+{%block script%}
+<script>
+    $('#atom_table').DataTable({
+        responsive: true,
+        language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            
+        },dom: 'Blfrtip',
+            buttons: [
+                 'excel', 'pdf'
+            ]
+    });
+</script>
+{%endblock%}
+</body>
+</html>

@@ -1,0 +1,434 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <meta name="author" content="" />
+    {%block title%}
+   
+    {%endblock%}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/af-2.5.3/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/datatables.min.css" rel="stylesheet"/>
+    <!-- <link rel="stylesheet" href="{%static 'assets/css/admin.css' %}"> -->
+    <link rel="stylesheet" href="{%static 'assets/style.css' %}">
+    {%block css%}
+    {%endblock%}
+    <style>
+
+a{
+    color:black;text-decoration: none;
+}a:hover{
+    color:rgb(0, 145, 255);text-decoration: none;
+}
+    .wd-35{width:35px}
+    .ht-35{height:35px}
+
+#atom_table{
+    width: 100% !important;margin-left: auto ;margin-right: auto ;
+}
+.kgn-tbl-container{
+    width:98%;
+    
+}
+#addNewSession {
+    display: none;
+}
+.c-box, .dashboard-1{
+    width:40px;
+    height:40px;
+    margin-right:10px;
+}
+
+</style>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-sidebar">
+            <div class="logo">
+                <a class="logo-img" href="/">
+                    <img class="desktop-logo" src="{%static 'logo.jpg'%}" alt="">
+                    <img class="small-logo" src="{%static 'small-logo.jpg'%}" alt="">
+                </a>
+            </div>
+            <div class="page-sidebar-inner">
+                <div class="page-sidebar-menu">
+                    <ul class="accordion-menu">
+                        
+                        <li id="dashboard">
+                            <a href="/supervisor"><i data-feather="user"></i>
+                                <span>Profile</span></a>
+                        </li>
+                        <li id="students">
+                            <a href="/adm?page=students"><i data-feather="users"></i>
+                                <span>Students</span></a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-footer text-center">
+                <h3>&copy; Kgn 2023</h3>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="page-header">
+                <nav class="navbar navbar-expand-lg d-flex justify-content-between">
+                    <ul class="list-inline list-unstyled mg-r-20">
+                        <li class="list-inline-item align-text-top"><a class="hidden-md hidden-lg" href="#"
+                                id="sidebar-toggle-button">&#9776;</a></li>
+                        <li class="list-inline-item align-text-top"><a class="hidden-xs hidden-sm" href="#"
+                                id="collapsed-sidebar-toggle-button">&#9776;</a></li>
+                    </ul>
+                    <ul class="list-inline list-unstyled mg-r-20">
+                        <li class="list-inline-item dropdown">
+                            <span class=" text-uppercase">{{user.first_name}} {{user.last_name}}</span>
+                            <a  href="/logout">
+                            <span class="select-profile"> (logout)</span>
+                            <img src="https://cdn1.iconfinder.com/data/icons/user-avatars-2/300/10-1024.png" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                            </a>
+                            
+                         </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="kgn-tbl-container mx-auto pb-5 pt-2 table-responsive">
+                {%block toolkit%}
+                {%endblock%}
+                {%block body%}
+                {%endblock%}
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/af-2.5.3/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="{%static 'assets/sidebar.js' %}"></script>
+        {%block javascriptlinks%}
+        {%endblock%}
+        <script>
+            feather.replace()
+    
+            function addNew(action) {
+                if (action == 'add') {
+                    document.getElementById('add').style = 'display:flex;'
+                }
+                else {
+                    document.getElementById('add').style = 'display:none;'
+                }
+    
+            }
+        </script>
+        <script>        
+            $(document).ready(function () {
+                document.getElementById("{{page_id}}").classList.add('active');           
+            });
+            peaceJS('#nav');
+            function delete_id() {
+                $(function () {
+                    $("#dialog").dialog({
+                        dialogClass: "no-close",
+                        buttons: [
+                            {
+                                text: "OK",
+                                icon: "ui-icon-close",
+                                click: function () {
+                                    $(this).dialog("close");
+                                    alert("Deletion Succeeded");
+                                }
+                            },
+                            {
+                                text: "CANCEL",
+                                click: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        ]
+                    });
+                });
+            }
+        </script> 
+        {%block script%}
+        {%endblock%}
+
+<script>
+    feather.replace()
+
+    function addNew(action) {
+        if (action == 'add') {
+            document.getElementById('add').style = 'display:flex;'
+        }
+        else {
+            document.getElementById('add').style = 'display:none;'
+        }
+
+    }
+</script>
+<script>
+
+$(document).ready(function() {
+    
+    "use strict";
+
+    var submenu_animation_speed = 100,
+        submenu_opacity_animation = true,
+        page_boxed = false,
+        page_sidebar_fixed = true,
+        page_sidebar_collapsed = false,
+        page_header_fixed = false;
+    
+
+    var body = $('body'),
+        page_header = $('.page-header'),
+        page_sidebar = $('.page-sidebar'),
+        page_content = $('.page-content');
+    
+
+    var boxed_page = function() {
+        if(page_boxed === true) {
+            $('.page-container').addClass('container');
+        };
+    };
+    
+
+    var fixed_header = function() {
+        if(page_header_fixed === true) {
+            $('body').addClass('page-header-fixed');
+        };
+    };
+    
+    
+
+    var page_sidebar_init = function() {
+        
+ 
+        $('.page-sidebar-inner').slimScroll({
+            height: '100%'
+        }).mouseover();  
+        
+
+        var fixed_sidebar = function() {
+            if((body.hasClass('page-sidebar-fixed'))&&(page_sidebar_fixed === false)) {
+                page_sidebar_fixed = true;
+            };
+            
+            if(page_sidebar_fixed === true) {
+                body.addClass('page-sidebar-fixed');
+                $('#fixed-sidebar-toggle-button').removeClass('icon-radio_button_unchecked');
+                $('#fixed-sidebar-toggle-button').addClass('icon-radio_button_checked');
+            };
+            
+            var fixed_sidebar_toggle = function() {
+                body.toggleClass('page-sidebar-fixed');
+                if(body.hasClass('page-sidebar-fixed')) {
+                    page_sidebar_fixed = true;
+                } else {
+                    page_sidebar_fixed = false;
+                }
+            };
+    
+            $('#fixed-sidebar-toggle-button').on('click', function() {
+                fixed_sidebar_toggle();
+                $(this).toggleClass('icon-radio_button_unchecked');
+                $(this).toggleClass('icon-radio_button_checked');
+                return false;
+            });
+        };
+        
+        
+  
+        var collapsed_sidebar = function() {
+            if(page_sidebar_collapsed === true) {
+                body.addClass('page-sidebar-collapsed');
+            };
+            
+            var collapsed_sidebar_toggle = function() {
+                body.toggleClass('page-sidebar-collapsed');
+                if(body.hasClass('page-sidebar-collapsed')) {
+                    page_sidebar_collapsed = true;
+                } else {
+                    page_sidebar_collapsed = false;
+                };
+                $('.page-sidebar-collapsed .page-sidebar .accordion-menu').on({
+                    mouseenter: function(){
+                        $('.page-sidebar').addClass('fixed-sidebar-scroll') 
+                    },
+                    mouseleave: function(){
+                        $('.page-sidebar').removeClass('fixed-sidebar-scroll')
+                    }
+                }, 'li');
+            };
+    
+                $('.page-sidebar-collapsed .page-sidebar .accordion-menu').on({
+                    mouseenter: function(){
+                        $('.page-sidebar').addClass('fixed-sidebar-scroll') 
+                    },
+                    mouseleave: function(){
+                        $('.page-sidebar').removeClass('fixed-sidebar-scroll')
+                    }
+                }, 'li');
+            $('#collapsed-sidebar-toggle-button').on('click', function() {
+                collapsed_sidebar_toggle();
+                return false;
+            });
+            
+        };
+		
+		    var small_screen_sidebar = function(){
+            
+            $('#sidebar-toggle-button').on('click', function() {
+                body.toggleClass('page-sidebar-visible');
+                return true;
+            });
+            $('#sidebar-toggle-button-close').on('click', function() {
+                body.toggleClass('page-sidebar-visible');
+                return true;
+            });
+        };
+        
+        fixed_sidebar();
+        collapsed_sidebar();
+        small_screen_sidebar();
+    };
+    
+        
+  
+    var accordion_menu = function() {
+        
+        var select_sub_menus = $('.page-sidebar li:not(.open) .sub-menu'),
+            active_page_sub_menu_link = $('.page-sidebar li.active-page > a');
+        
+      
+        select_sub_menus.hide();
+        
+        
+        if(submenu_opacity_animation === false) {
+            $('.sub-menu li').each(function(i){
+                $(this).addClass('animation');
+            });
+        };
+        
+      
+        $('.accordion-menu').on('click', 'a', function() {
+            var sub_menu = $(this).next('.sub-menu'),
+                parent_list_el = $(this).parent('li'),
+                active_list_element = $('.accordion-menu > li.open'),
+                show_sub_menu = function() {
+                    sub_menu.slideDown(submenu_animation_speed);
+                    parent_list_el.addClass('open');
+                    if(submenu_opacity_animation === true) {
+                        $('.open .sub-menu li').each(function(i){
+                            var t = $(this);
+                            setTimeout(function(){ t.addClass('animation'); }, (i+1) * 15);
+                        });
+                    };
+                },
+                hide_sub_menu = function() {
+                    if(submenu_opacity_animation === true) {
+                        $('.open .sub-menu li').each(function(i){
+                            var t = $(this);
+                            setTimeout(function(){ t.removeClass('animation'); }, (i+1) * 5);
+                        });
+                    };
+                    sub_menu.slideUp(submenu_animation_speed);
+                    parent_list_el.removeClass('open');
+                },
+                hide_active_menu = function() {
+                    $('.accordion-menu > li.open > .sub-menu').slideUp(submenu_animation_speed);
+                    active_list_element.removeClass('open');
+                };
+            
+            if((sub_menu.length)&&(!body.hasClass('page-sidebar-collapsed'))) {
+                
+                if(!parent_list_el.hasClass('open')) {
+                    if(active_list_element.length) {
+                        hide_active_menu();
+                    };
+                    show_sub_menu();
+                } else {
+                    hide_sub_menu();
+                };
+                
+                return false;
+                
+            };
+            if((sub_menu.length)&&(body.hasClass('page-sidebar-collapsed'))){
+                return false;
+            };
+        });
+        
+        if($('.active-page > .sub-menu').length) {
+            active_page_sub_menu_link.click();
+        };
+    };
+
+
+    
+    page_sidebar_init();
+    boxed_page();
+    accordion_menu();
+    navbar_init();
+    right_sidebar();
+    plugins_init();
+    
+});
+
+
+ $(function(){
+ 
+   'use strict'
+ 
+   var mql = window.matchMedia('(min-width:992px) and (max-width: 1199px)');
+ 
+   function doMinimize(e) {
+     if (e.matches) {
+       $('body').addClass('page-sidebar-collapsed');
+     } 
+	 else {
+       $('body').removeClass('page-sidebar-collapsed');
+     }
+   }
+ 
+   mql.addListener(doMinimize);
+  doMinimize(mql);
+
+})
+
+</script>
+<script>
+
+(function (e) {
+    e.fn.extend({
+        slimScroll: function (f) {
+            var a = e.extend({ width: "auto", height: "250px", size: "3px", color: "#fff", position: "right", distance: "1px", start: "top", opacity: .4, alwaysVisible: false, disableFadeOut: true, railVisible: false, railColor: "#333", railOpacity: .2, railDraggable: false, railClass: "slimScrollRail", barClass: "slimScrollBar", wrapperClass: "slimScrollDiv", allowPageScroll: false, wheelStep: 10, touchScrollStep: 20, borderRadius: "50px", railBorderRadius: "50px" }, f); this.each(function () {
+                function v(d) { if (r) { d = d || window.event; var c = 0; d.wheelDelta && (c = -d.wheelDelta / 120); d.detail && (c = d.detail / 3); e(d.target || d.srcTarget || d.srcElement).closest("." + a.wrapperClass).is(b.parent()) && n(c, !0); d.preventDefault && !k && d.preventDefault(); k || (d.returnValue = !1) } } function n(d, g, e) { k = !1; var f = b.outerHeight() - c.outerHeight(); g && (g = parseInt(c.css("top")) + d * parseInt(a.wheelStep) / 100 * c.outerHeight(), g = Math.min(Math.max(g, 0), f), g = 0 < d ? Math.ceil(g) : Math.floor(g), c.css({ top: g + "px" })); l = parseInt(c.css("top")) / (b.outerHeight() - c.outerHeight()); g = l * (b[0].scrollHeight - b.outerHeight()); e && (g = d, d = g / b[0].scrollHeight * b.outerHeight(), d = Math.min(Math.max(d, 0), f), c.css({ top: d + "px" })); b.scrollTop(g); b.trigger("slimscrolling", ~~g); w(); p() } function x() { u = Math.max(b.outerHeight() / b[0].scrollHeight * b.outerHeight(), 30); c.css({ height: u + "px" }); var a = u == b.outerHeight() ? "none" : "block"; c.css({ display: a }) } function w() { x(); clearTimeout(B); l == ~~l ? (k = a.allowPageScroll, C != l && b.trigger("slimscroll", 0 == ~~l ? "top" : "bottom")) : k = !1; C = l; u >= b.outerHeight() ? k = !0 : (c.stop(!0, !0).fadeIn("fast"), a.railVisible && m.stop(!0, !0).fadeIn("fast")) } function p() { a.alwaysVisible || (B = setTimeout(function () { a.disableFadeOut && r || y || z || (c.fadeOut("slow"), m.fadeOut("slow")) }, 1E3)) } var r, y, z, B, A, u, l, C, k = !1, b = e(this); if (b.parent().hasClass(a.wrapperClass)) {
+                    var q = b.scrollTop(), c = b.siblings("." + a.barClass), m = b.siblings("." + a.railClass); x(); if (e.isPlainObject(f)) {
+                        if ("height" in f && "auto" == f.height) {
+                            b.parent().css("height", "auto"); b.css("height", "auto"); var h = b.parent().parent().height(); b.parent().css("height",
+                                h); b.css("height", h)
+                        } else "height" in f && (h = f.height, b.parent().css("height", h), b.css("height", h)); if ("scrollTo" in f) q = parseInt(a.scrollTo); else if ("scrollBy" in f) q += parseInt(a.scrollBy); else if ("destroy" in f) { c.remove(); m.remove(); b.unwrap(); return } n(q, !1, !0)
+                    }
+                } else if (!(e.isPlainObject(f) && "destroy" in f)) {
+                    a.height = "auto" == a.height ? b.parent().height() : a.height; q = e("<div></div>").addClass(a.wrapperClass).css({ position: "relative", overflow: "hidden", width: a.width, height: a.height }); b.css({ overflow: "hidden", width: a.width, height: a.height }); var m = e("<div></div>").addClass(a.railClass).css({ width: a.size, height: "100%", position: "absolute", top: 0, display: a.alwaysVisible && a.railVisible ? "block" : "none", "border-radius": a.railBorderRadius, background: a.railColor, opacity: a.railOpacity, zIndex: 90 }), c = e("<div></div>").addClass(a.barClass).css({ background: a.color, width: a.size, position: "absolute", top: 0, opacity: a.opacity, display: a.alwaysVisible ? "block" : "none", "border-radius": a.borderRadius, BorderRadius: a.borderRadius, MozBorderRadius: a.borderRadius, WebkitBorderRadius: a.borderRadius, zIndex: 99 }), h = "right" == a.position ? { right: a.distance } : { left: a.distance }; m.css(h); c.css(h); b.wrap(q); b.parent().append(c); b.parent().append(m); a.railDraggable && c.bind("mousedown", function (a) { var b = e(document); z = !0; t = parseFloat(c.css("top")); pageY = a.pageY; b.bind("mousemove.slimscroll", function (a) { currTop = t + a.pageY - pageY; c.css("top", currTop); n(0, c.position().top, !1) }); b.bind("mouseup.slimscroll", function (a) { z = !1; p(); b.unbind(".slimscroll") }); return !1 }).bind("selectstart.slimscroll", function (a) { a.stopPropagation(); a.preventDefault(); return !1 }); m.hover(function () { w() }, function () { p() }); c.hover(function () { y = !0 }, function () { y = !1 }); b.hover(function () { r = !0; w(); p() }, function () { r = !1; p() }); b.bind("touchstart", function (a, b) { a.originalEvent.touches.length && (A = a.originalEvent.touches[0].pageY) }); b.bind("touchmove", function (b) { k || b.originalEvent.preventDefault(); b.originalEvent.touches.length && (n((A - b.originalEvent.touches[0].pageY) / a.touchScrollStep, !0), A = b.originalEvent.touches[0].pageY) });
+                    x(); "bottom" === a.start ? (c.css({ top: b.outerHeight() - c.outerHeight() }), n(0, !0)) : "top" !== a.start && (n(e(a.start).position().top, null, !0), a.alwaysVisible || c.hide()); window.addEventListener ? (this.addEventListener("DOMMouseScroll", v, !1), this.addEventListener("mousewheel", v, !1)) : document.attachEvent("onmousewheel", v)
+                }
+            }); return this
+        }
+    }); e.fn.extend({ slimscroll: e.fn.slimScroll })
+})(jQuery);
+</script>
+</body>
+
+</html>

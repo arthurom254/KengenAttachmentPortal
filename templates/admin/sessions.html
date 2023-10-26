@@ -1,0 +1,109 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block title%}
+    {%endblock%}
+    <title>Sessions</title>
+{%block css%}
+
+<style>
+
+
+
+</style>
+
+{%endblock%}
+{%block toolkit%}
+
+{%endblock%}
+{%block body%}
+<div class="container-fluid">
+    <div class="row row-xs clearfix">
+        <div class="col-12">
+            <div class="card mg-b-20">
+                <form action="/addnew?{{request.GET.urlencode}}" method="POST">
+                    {%csrf_token%}
+                    <ul class="list-group list-group-flush tx-13">
+                        <li class="list-group-item d-flex justify-content-between align-items-center pd-sm-x-20">
+                            <span class="h5">SESSIONS {{number}}</span>
+                            <span class="btn card-icon-warning" id="addNewSessionBtn" onclick="addNewSession('flex')">&plus;</span>
+                            
+                        </li>
+
+                        <li class="list-group-item pd-sm-x-20" id="addNewSession">
+
+                            <div class="col-sm-4 mx-auto col-xl-3">                     
+                                <input type="date" name="startdate" id="startdate" class="form-control" required>
+                            </div>
+                            <div class="col-sm-4 mx-auto col-xl-3">                     
+                                <input type="date" name="enddate" id="enddate" class="form-control" required>
+                            </div>
+                            <div class="col-sm-2 mx-auto col-xl-3">                     
+                                <input type="submit" class="btn border form-control" value="Submit" />
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </form>
+
+
+                <ul class="list-group list-group-flush tx-13">
+
+                    <form action="" method="post">
+                        {%csrf_token%}
+                        {%for sess in sessions%}
+
+                        <li class="d-flex justify-content-between px-2 border">
+                            <div class=" d-flex">
+                            <div class="d-none d-sm-block"><span
+                                    class="c-box d-flex align-items-center justify-content-center rounded card-icon-success">
+                                    <div class="custom-control custom-radio">
+                                        <input name="session" value="{{sess.id}}" type="radio"
+                                            onchange="this.form.submit()" class="custom-control-input" id="sessionid{{sessid}}"
+                                            {%if sess.active == 'True' %} checked="" {%endif%}>
+
+                                    </div>
+                            </div>
+                            <div class="pd-sm-l-10">
+                                <h6 class="tx-dark mg-b-0">{{sess.startdate}} - {{sess.enddate}}</h6>
+                                <span class="tx-12 mg-b-0 tx-gray-500">
+                                    Status: {%if sess.active == 'True'%} <span
+                                        class="tx-12 tx-success mg-b-0">Active</span>
+                                    {%else%}
+                                    <span class="tx-12 tx-danger mg-b-0">Inactive</span>
+                                    {%endif%}
+                                </span>
+                            </div>
+                            </div>
+                            <div class="mg-l-auto text-right">
+                               <span class="tx-12 mg-b-0"><a href="/adm?page=students&sid={{sess.id}}"
+                                        class="tx-dark mg-b-0 tx-semibold tx-success kgn-a">
+                                        students</a></span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </form>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{%endblock%}
+
+{%block javascriptlinks%}
+
+{%endblock%}
+
+{%block script%}
+<script>
+    
+
+    function addNewSession(arg){
+        document.getElementById("addNewSession").style.display=arg;
+    }
+
+   
+</script>
+{%endblock%}

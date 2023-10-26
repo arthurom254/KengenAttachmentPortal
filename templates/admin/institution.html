@@ -1,0 +1,94 @@
+{%extends 'admin/adminbase.html'%}
+{%load static%}
+{%block title%}
+<title>Institutions</title>
+{%endblock%}
+{%block css%}
+<style>
+</style>
+{%endblock%}
+{%block toolkit%}
+{%endblock%}
+{%block body%}
+<div class="container-fluid">
+    <div class="row row-xs clearfix">
+        <div class="col-12">
+            <div class="mg-b-20">
+                <form action="/addnew?{{request.GET.urlencode}}" method="POST">
+                    {%csrf_token%}
+                    <ul class="list-group list-group-flush tx-13">
+                        <li class="list-group-item d-flex justify-content-between align-items-center pd-sm-x-20">
+                            <span class="h5 text-uppercase">Institutions</span>
+                            <span class="btn card-icon-warning" id="addNewSessionBtn"
+                                onclick="addNewSession('flex')">&plus;</span>
+                        </li>
+                        <li class="list-group-item pd-sm-x-20" id="addNewSession">
+                            <div class="row">
+                                <div class="col mx-1">
+                                    <label for="institution_name">Institution name</label>
+                                    <input type="text" name="institution_name" id="institution_name"
+                                        class="form-control">
+                                </div>
+                                <div class="col mx-1">
+                                    <label for="institution_name">Institution campus</label>
+                                    <input type="text" name="institution_campus" id="institution_campus"
+                                        class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col col-lg-6 col-md-6 mx-auto">
+                                        <label for="institution_name">Email</label>
+                                        <input type="email" name="insitution_email" id="insitution_email"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col col-lg-3 col-md-3 mx-auto">
+                                        <label for="institution_name">PO BOX</label>
+                                        <input type="text" name="institution_postbox" id="institution_postbox"
+                                            class="form-control" placeholder="e.g 123 Nairobi">
+                                    </div>
+                                    <div class="col col-lg-3 col-md-3 mx-auto">
+                                        <label for="btn"></label>
+                                        <input type="submit" class="btn btn-label-primary border form-control" value="Submit" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <ul class="list-group list-group-flush tx-13">
+
+                    
+                        
+
+                        <table class="table table-light">
+                            <thead>
+                                <tr>
+                                    <th>Name and campus</th>
+                                    <th>Email</th>
+                                    <th>POBox</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for ins in institution%}
+                                <tr>
+                                    <td>{{ins}}</td>
+                                    <td>{{ins.insitution_email}}</td>
+                                    <td>PO Box {{ins.insitution_postbox}}</td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>                        
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block javascriptlinks%}
+{%endblock%}
+{%block script%}
+<script>
+    function addNewSession(arg) {
+        document.getElementById("addNewSession").style.display = arg;
+    }
+</script>
+{%endblock%}

@@ -1,0 +1,176 @@
+{%extends 'students/base.html'%}
+{%load static%}
+{%block css%}
+<!-- <link rel="stylesheet" href="{%static 'assets/css/admin.css' %}"> -->
+
+<link rel="stylesheet" href="{%static 'assets/student.css'%}">
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css">
+{%endblock%}
+
+{%block body%}
+<div class="container-fluid">
+    <h5 class="border p-1  mb-0 btn form-control " data-bs-toggle="collapse" data-bs-target="#update-profile"
+        arial-expanded="false" arial-controls="update-profile" role="button">Edit profile</h5>
+    <form action="updateprofile" enctype="multipart/form-data" method="post">
+        <div class="row collapse" id="update-profile" data-bs-toggle="hide">
+
+            <div class="col-lg-5 col-md-5 bg-light m-3 mid p-2">
+                <div class="container-fluid">
+                    {%csrf_token%}
+                    <div class="mb-2">
+                        <label for="fname" class="form-label">First name:</label>
+                        <input type="text" class="form-control" value="{{student.student_details.first_name}}"
+                            name="fname" id="fname" aria-describedby="fname" placeholder="first name" disabled>
+                    </div>
+                    <div class="mb-2">
+                        <label for="lname" class="form-label">Last name:</label>
+                        <input type="text" class="form-control" value="{{student.student_details.last_name}}"
+                            name="lname" id="lname" aria-describedby="lname" placeholder="last name" disabled>
+                    </div>
+                    <div class="mb-2">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" value="{{student.student_details.email}}" name="email"
+                            id="email" aria-describedby="email" placeholder="email">
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input type="text" class="form-control" value="{{student.phone_number }}" name="phone"
+                            id="phone" aria-describedby="phone" placeholder="phone">
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Institution:</label>
+                        <select name="institution" class="form-control" id="institution">
+                            <option value="">{{student.institution}}</option>
+                            {%for inst in institution %}
+                            <option value="{{inst.id}}">{{inst}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn border text-dark form-control">Save</button>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 p-1">
+                <div class="card mg-b-20">
+                    <div class="card-header">
+                        <h4 class="card-header-title"><label for="report">Upload Your report</label> </h4>
+                    </div>
+                    <div class="card-body" id="">
+                        <input type="file" name="report" class="dropify" data-errors-position="outside">
+                    </div>
+                </div>
+                {%if pdf != None%} <a href="media/{{pdf.document}}">Final Report</a>{%else%} <h6>No document yet</h6>
+                {%endif%}
+            </div>
+    </form>
+
+</div>
+
+</div>
+<div class="container-fluid my-1">
+    {%for wk in weeks%}
+<a href="view/{{wk.id}}?new=1" class="btn btn-warning my-1">Week {{wk.weeknum}}</a>
+{%endfor%}
+    {%for log in logs reversed%}
+
+    <li class="list-group-item d-flex justify-content-between pd-sm-x-20 bg-light py-1 border">
+        <div class="d-flex">
+        <div class="d-none d-sm-block">
+            <span
+                class="wd-40 ht-40 mg-r-10 d-flex align-items-center justify-content-center rounded card-icon-success">
+                <div class="custom-control custom-radio dashboard-1 d-flex justify-content-center align-items-center">
+                    <input name="approve{{log.week.id}}" value="{{log.week.id}}" type="checkbox"
+                        class="custom-control-input" id="sessionid{{log.week.id}}" {%if log.approved == 'True' %} checked
+                        disabled{%endif%}>
+                </div>
+            </span>
+        </div>
+        <div class="pd-sm-l-10">
+            <h6 class="tx-dark mg-b-0">Week {{log.week.weeknum}}<span class="tx-12"> ({{log.week.startdate}} -
+                    {{log.week.enddate}})</span>
+            </h6>
+            <span class="tx-12 mg-b-0 tx-gray-500">
+                Status: {%if log.week.closed == 'False'%}<span class="tx-12 tx-success mg-b-0">Open</span>
+                {%else%}
+                <span class="tx-12 tx-danger mg-b-0">Closed</span>
+                {%endif%}
+            </span>
+        </div>
+        </div>
+        <div class="mg-l-auto text-right d-flex">
+            <span class="badge badge-pill">
+                {%if log.week.closed == 'True'%}
+                {%else%}
+                <a class="text-dark btn border p-2 btn-label-success" href="/edit/{{log.week.id}}">EDIT</a>
+                {%endif%}
+                <a class="text-dark btn p-2 bg-info border" href="/view/{{log.week.id}}">VIEW</a>
+
+            </span>
+        </div>
+    </li>
+    {%endfor%}
+    <div class="pdf-section">
+        <a href="/pdf" class="btn card-icon-success">Download your pdf</a>
+    </div>
+</div>
+<div class="container-fluid">
+    {{student.department}}
+</div>
+
+<div class="container-fluid mt-2 mx-auto row">
+    {%for supervisor in supervisors%}
+    <div class="col-sm-6 col-xl-3">
+        <div class="card mg-b-20">
+            <div class="card-body p-0">
+                <div class="p-3 d-flex justify-content-between align-items-center">
+                    <img src="/media/{{supervisor.profile_photo}}" width="60px" height="60px" alt=""
+                        class="img-fluid rounded-circle wd-60">
+                    <div class="ml-3 align-self-center">
+                        <h5 class="tx-13 tx-medium tx-dark mb-0">{{supervisor.supervisor_details.first_name}}
+                            {{supervisor.supervisor_details.last_name}}</h5>
+                        <p class="mb-0 tx-gray-500">supervisor</p>
+                    </div>
+                    <div class="d-flex justify-content-center ml-auto btn-group">
+                        <a href="" class="mr-1 btn btn-sm btn-warning border"><i data-feather="phone"></i></a>
+                        <a href="" class="mr-1 btn btn-sm btn-warning border"><i data-feather="mail"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%empty%}
+    <div class="row">
+        <div class="col-5">
+            <!-- <form action="activation" method="POST">
+                {%csrf_token%}
+                {{studentform.as_p}}
+                <input type="submit" value="Submit" class="form-control">
+            </form> -->
+            <h5>No supervisor assigned</h5>
+        </div>
+    </div>
+
+    {%endfor%}
+</div>
+</div>
+
+{%endblock%}
+
+
+
+{%block js%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+<script>
+    $('.dropify').dropify({
+        messages: {
+            'default': 'Drag and drop or click',
+            'replace': 'Drag and drop or click to replace',
+            'remove': 'Remove',
+            'error': 'Ooops, something wrong happended.'
+        }
+    });
+
+</script>
+
+{%endblock%}

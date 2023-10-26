@@ -1,0 +1,7 @@
+Hello {{fname}} {{lname}}
+Welcome to KenGen Attachment site
+
+Username: {{username}}
+Password: {{pwd}}
+
+Login to http://172.17.100.17
