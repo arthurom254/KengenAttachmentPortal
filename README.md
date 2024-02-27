@@ -22,7 +22,7 @@ This app helps the organization keep track of the activities undertaken by stude
     python3 -m manage runserver
     ```
 
-## ACTIVATE THE VIRTUAL MACHINE
+## ACTIVATE THE VIRTUAL ENVIRONMENT
 - Windows
     ``` bash
     ./venv/Scripts/activate
